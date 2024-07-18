@@ -5,19 +5,19 @@ export function TicTacToe() {
     return (
         <div class="container">
             <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
+                <button class="square"></button>
+                <button class="square"></button>
+                <button class="square"></button>
             </div>
             <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
+                <button class="square"></button>
+                <button class="square"></button>
+                <button class="square"></button>
             </div>
             <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
+                <button class="square">X</button>
+                <button class="square"></button>
+                <button class="square"></button>
             </div>
         </div>
     );

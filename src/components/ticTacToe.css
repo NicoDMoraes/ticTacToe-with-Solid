@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    border: solid 1px black;
 }
 
 .row {
@@ -14,7 +14,13 @@
 }
 
 .square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100px;
     height: 100px;
     border: solid 1px black;
+    font-size: 2em;
+    background: #ffff;
+    color: black;
 }
