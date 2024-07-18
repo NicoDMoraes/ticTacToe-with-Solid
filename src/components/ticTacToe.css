@@ -33,9 +33,17 @@
     color: black;
 }
 
+.square:hover {
+    background: rgb(209, 221, 237);
+    cursor: pointer;
+}
+
 .selected {
-    background: black;
-    color: white;
+    color: purple;
+}
+
+.selected:hover {
+    cursor: default;
 }
 
 .turn {

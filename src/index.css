@@ -8,4 +8,5 @@ html body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: rgb(209, 221, 237);
 }
