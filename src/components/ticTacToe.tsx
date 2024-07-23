@@ -4,13 +4,33 @@ import { createSignal } from "solid-js";
 type Square = 'X' | 'O' | '';
 // type Player = 'X' | 'O';
 
+// function NonReactiveBoardSquare(props: { index: number, board: Square[], onClick: (index: number) => void }) {
+//     const square = props.board[props.index];
+//     return <button
+//         class="square"
+//         classList={{ 'selected': square === 'X' || square === 'O' }}
+//         onClick={() => props.onClick(props.index)}
+//     >{square}
+//     </button>
+// }
+
+function BoardSquare(props: { index: number, board: Square[], onClick: (index: number) => void }) {
+    const square = () => props.board[props.index];
+    return <button
+        class="square"
+        classList={{ 'selected': square() === 'X' || square() === 'O' }}
+        onClick={() => props.onClick(props.index)}
+    >{square()}
+    </button>
+}
+
 export function TicTacToe() {
     const [player, setPlayer] = createSignal<'X' | 'O'>('X');
     const [board, setBoard] = createSignal<Square[]>(
         ['', '', '', '', '', '', '', '', '']
     );
 
-    const onClick = (index: number) => {
+    const onClickSquare = (index: number) => {
         if (board()[index] !== '') return;
         setBoard(board().map((square, i) => i === index ? player() : square));
         setPlayer(player() === 'X' ? 'O' : 'X');
@@ -20,46 +40,19 @@ export function TicTacToe() {
         <div class="game">
             <div class="container">
                 <div class="row">
-                    <button class="square"
-                        classList={{ 'selected': board()[0] === 'X' || board()[0] === 'O' }}
-                        onClick={() => onClick(0)}
-                    >{board()[0]}</button>
-                    <button class="square"
-                        classList={{ 'selected': board()[1] === 'X' || board()[1] === 'O' }}
-                        onClick={() => onClick(1)}
-                    >{board()[1]}</button>
-                    <button class="square"
-                        classList={{ 'selected': board()[2] === 'X' || board()[2] === 'O' }}
-                        onClick={() => onClick(2)}
-                    >{board()[2]}</button>
+                    <BoardSquare index={0} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={1} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={2} board={board()} onClick={onClickSquare} />
                 </div>
                 <div class="row">
-                    <button class="square"
-                        classList={{ 'selected': board()[3] === 'X' || board()[3] === 'O' }}
-                        onClick={() => onClick(3)}
-                    >{board()[3]}</button>
-                    <button class="square"
-                        classList={{ 'selected': board()[4] === 'X' || board()[4] === 'O' }}
-                        onClick={() => onClick(4)}
-                    >{board()[4]}</button>
-                    <button class="square"
-                        classList={{ 'selected': board()[5] === 'X' || board()[5] === 'O' }}
-                        onClick={() => onClick(5)}
-                    >{board()[5]}</button>
+                    <BoardSquare index={3} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={4} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={5} board={board()} onClick={onClickSquare} />
                 </div>
                 <div class="row">
-                    <button class="square"
-                        classList={{ 'selected': board()[6] === 'X' || board()[6] === 'O' }}
-                        onClick={() => onClick(6)}
-                    >{board()[6]}</button>
-                    <button class="square"
-                        classList={{ 'selected': board()[7] === 'X' || board()[7] === 'O' }}
-                        onClick={() => onClick(7)}
-                    >{board()[7]}</button>
-                    <button class="square"
-                        classList={{ 'selected': board()[8] === 'X' || board()[8] === 'O' }}
-                        onClick={() => onClick(8)}
-                    >{board()[8]}</button>
+                    <BoardSquare index={6} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={7} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={8} board={board()} onClick={onClickSquare} />
                 </div>
             </div>
             <div class="turn">{player()}'s turn</div>
