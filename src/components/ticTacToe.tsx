@@ -1,54 +1,52 @@
 import "./ticTacToe.css";
 import { createSignal } from "solid-js";
 
+type Square = 'X' | 'O' | '';
+
 export function TicTacToe() {
     const [player, setPlayer] = createSignal('X');
+    const [board, setBoard] = createSignal<Square[]>(
+        ['', '', '', '', '', '', '', '', '']
+    );
 
-
+    const onClick = (index: number) => {
+        setPlayer(player() === 'X' ? 'O' : 'X');
+    };
 
     return (
         <div class="game">
             <div class="container">
                 <div class="row">
-                    <button class="square 1"
-                        classList={{ selected: player() === 'O' }}
-                        onClick={() => setPlayer('O')}
+                    <button class="square"
+                        onClick={() => onClick(0)}
+                    >{board()[0]}</button>
+                    <button class="square"
+                        onClick={onClick(1)}
                     >{player()}</button>
-                    <button class="square 2"
-                        classList={{ selected: player() === 'O' }}
-                        onClick={() => setPlayer('O')}
-                    >{player()}</button>
-                    <button class="square 3"
-                        classList={{ selected: player() === 'O' }}
-                        onClick={() => setPlayer('O')}
+                    <button class="square"
+                        onClick={onClick}
                     >{player()}</button>
                 </div>
                 <div class="row">
-                    <button class="square 4"
-                        classList={{ selected: player() === 'X' }}
+                    <button class="square"
+                        onClick={onClick}
+                    >{player()}</button>
+                    <button class="square"
                         onClick={() => setPlayer('X')}
                     >{player()}</button>
-                    <button class="square 5"
-                        classList={{ selected: player() === 'X' }}
-                        onClick={() => setPlayer('X')}
-                    >{player()}</button>
-                    <button class="square 6"
-                        classList={{ selected: player() === 'X' }}
-                        onClick={() => setPlayer('X')}
+                    <button class="square"
+                        onClick={onClick}
                     >{player()}</button>
                 </div>
                 <div class="row">
-                    <button class="square 7"
-                        classList={{ selected: player() === 'O' }}
-                        onClick={() => setPlayer('O')}
+                    <button class="square"
+                        onClick={onClick}
                     >{player()}</button>
-                    <button class="square 8"
-                        classList={{ selected: player() === 'O' }}
-                        onClick={() => setPlayer('O')}
+                    <button class="square"
+                        onClick={onClick}
                     >{player()}</button>
-                    <button class="square 9"
-                        classList={{ selected: player() === 'O' }}
-                        onClick={() => setPlayer('O')}
+                    <button class="square"
+                        onClick={onClick}
                     >{player()}</button>
                 </div>
             </div>
