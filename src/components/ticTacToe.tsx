@@ -1,5 +1,5 @@
 import "./ticTacToe.css";
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 
 type Square = 'X' | 'O' | '';
 // type Player = 'X' | 'O';
@@ -24,11 +24,44 @@ function BoardSquare(props: { index: number, board: Square[], onClick: (index: n
     </button>
 }
 
+
+
 export function TicTacToe() {
     const [player, setPlayer] = createSignal<'X' | 'O'>('X');
     const [board, setBoard] = createSignal<Square[]>(
         ['', '', '', '', '', '', '', '', '']
     );
+    const currentWinner = () => {
+
+        const lines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+        for (const line of lines) {
+            const [a, b, c] = line;
+            if (board()[a] && board()[a] === board()[b] && board()[a] === board()[c]) {
+                return {
+                    message: "the Winner is " + board()[a],
+                    line: line
+                };
+            }
+        }
+        for (const square of board()) {
+            if (square === '') { return null; };
+        }
+        return {
+            message: "it's a Draw",
+            line: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        }
+    };
+
+
 
     const onClickSquare = (index: number) => {
         if (board()[index] !== '') return;
@@ -56,6 +89,9 @@ export function TicTacToe() {
                 </div>
             </div>
             <div class="turn">{player()}'s turn</div>
+            <Show when={currentWinner() !== null}>
+                <div class="winner"> {currentWinner()?.message}</div>
+            </Show>
         </div>
     );
 }
