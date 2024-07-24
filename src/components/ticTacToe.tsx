@@ -23,10 +23,16 @@ function BoardSquare(props: {
   const [hoveredSquare, setHoveredSquare] = createSignal<Square>("");
   const handleMouseEnter = () => setHoveredSquare(player());
   const handleMouseLeave = () => setHoveredSquare("");
+
+  const isFilled = () => currentWinner()?.line.includes(props.index) 
+
   return (
     <button
       class="square"
-      classList={{ selected: square() === "X" || square() === "O" }}
+      classList={{
+        selected: square() !== "",
+        filled: isFilled(),
+      }}
       onClick={() => props.onClick(props.index)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
