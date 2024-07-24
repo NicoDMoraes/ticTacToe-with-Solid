@@ -1,5 +1,5 @@
 import "./ticTacToe.css";
-import { createSignal, Show, For } from "solid-js";
+import { createSignal, Show, For, Switch, Match } from "solid-js";
 
 type Square = "X" | "O" | "";
 // type Player = 'X' | 'O';
@@ -31,10 +31,12 @@ function BoardSquare(props: {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {square()}
-      <Show when={square() === ""}>
-        <div class="hovered-square">{hoveredSquare()}</div>
-      </Show>
+      <Switch>
+        <Match when={square() !== ""}>{square()}</Match>
+        <Match when={square() === ""}>
+          <div class="hovered-square">{hoveredSquare()}</div>
+        </Match>
+      </Switch>
     </button>
   );
 }
@@ -85,7 +87,6 @@ const currentWinner = () => {
   };
 };
 export function TicTacToe() {
-
   const onClickSquare = (index: number) => {
     if (board()[index] !== "") return;
     setBoard(board().map((square, i) => (i === index ? player() : square)));
