@@ -100,3 +100,12 @@
 .draw:hover {
     background: #ed8637;
 }
+
+.gameOver {
+    background: #c4c3c3;
+}
+
+.gameOver:hover {
+    background: #c4c3c3;
+    cursor: default;
+}

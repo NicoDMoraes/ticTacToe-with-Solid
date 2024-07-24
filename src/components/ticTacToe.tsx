@@ -1,39 +1,38 @@
 import "./ticTacToe.css";
-import { createSignal, Show, For, Switch, Match } from "solid-js";
+import { createSignal, Show, Switch, Match } from "solid-js";
 
 type Square = "X" | "O" | "";
-// type Player = 'X' | 'O';
-
-// function NonReactiveBoardSquare(props: { index: number, board: Square[], onClick: (index: number) => void }) {
-//     const square = props.board[props.index];
-//     return <button
-//         class="square"
-//         classList={{ 'selected': square === 'X' || square === 'O' }}
-//         onClick={() => props.onClick(props.index)}
-//     >{square}
-//     </button>
-// }
+// type CurrentWinner = {
+//     message: string;
+//     line: number[];
+//     winner: Square;
+//     draw?: boolean;
+// };
 
 function BoardSquare(props: {
     index: number;
     board: Square[];
     onClick: (index: number) => void;
+    // currentWinner: () => CurrentWinner | null;
 }) {
+    // const currentWinner = () => props.currentWinner();
+    // const player = () => props.currentWinner()?.winner || props.currentWinner()?.draw ? "" : props.player();
     const square = () => props.board[props.index];
     const [hoveredSquare, setHoveredSquare] = createSignal<Square>("");
     const handleMouseEnter = () => setHoveredSquare(player());
     const handleMouseLeave = () => setHoveredSquare("");
-
     const isWinner = () => currentWinner()?.line.includes(props.index)
-
+    const gameOver = () => currentWinner()?.gameOver
+    const gameOverSquare = () => !currentWinner()?.line.includes(props.index) && currentWinner()?.gameOver
     return (
         <button
             class="square"
             classList={{
                 selected: square() !== "",
-                winnerO: isWinner() && currentWinner()?.winner === "O",
-                winnerX: isWinner() && currentWinner()?.winner === "X",
+                winnerO: isWinner() && currentWinner()?.winnerName === "O",
+                winnerX: isWinner() && currentWinner()?.winnerName === "X",
                 draw: isWinner() && currentWinner()?.draw,
+                gameOver: gameOverSquare(),
             }}
             onClick={() => props.onClick(props.index)}
             onMouseEnter={handleMouseEnter}
@@ -41,7 +40,7 @@ function BoardSquare(props: {
         >
             <Switch>
                 <Match when={square() !== ""}>{square()}</Match>
-                <Match when={square() === ""}>
+                <Match when={square() === "" && !gameOver()}>
                     <div class="hovered-square">{hoveredSquare()}</div>
                 </Match>
             </Switch>
@@ -64,6 +63,12 @@ const [board, setBoard] = createSignal<Square[]>([
 function createBoard(): Square[] {
     return ["", "", "", "", "", "", "", "", ""];
 }
+const onClickSquare = (index: number) => {
+    if (board()[index] !== "") return;
+    setBoard(board().map((square, i) => (i === index ? player() : square)));
+    setPlayer(player() === "X" ? "O" : "X");
+};
+
 const currentWinner = () => {
     const lines = [
         [0, 1, 2],
@@ -79,9 +84,10 @@ const currentWinner = () => {
         const [a, b, c] = line;
         if (board()[a] && board()[a] === board()[b] && board()[a] === board()[c]) {
             return {
-                message: "the Winner is " + board()[a],
+                message: board()[a] + " Wins",
                 line: line,
-                winner: board()[a],
+                winnerName: board()[a],
+                gameOver: true,
             };
         }
     }
@@ -93,16 +99,12 @@ const currentWinner = () => {
     return {
         message: "it's a Draw",
         line: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        gameOver: true,
         draw: true,
     };
 };
-export function TicTacToe() {
-    const onClickSquare = (index: number) => {
-        if (board()[index] !== "") return;
-        setBoard(board().map((square, i) => (i === index ? player() : square)));
-        setPlayer(player() === "X" ? "O" : "X");
-    };
 
+export function TicTacToe() {
     return (
         <div class="game">
             <div class="header">Tic Tac Toe</div>
