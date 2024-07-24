@@ -15,121 +15,125 @@ type Square = "X" | "O" | "";
 // }
 
 function BoardSquare(props: {
-  index: number;
-  board: Square[];
-  onClick: (index: number) => void;
+    index: number;
+    board: Square[];
+    onClick: (index: number) => void;
 }) {
-  const square = () => props.board[props.index];
-  const [hoveredSquare, setHoveredSquare] = createSignal<Square>("");
-  const handleMouseEnter = () => setHoveredSquare(player());
-  const handleMouseLeave = () => setHoveredSquare("");
+    const square = () => props.board[props.index];
+    const [hoveredSquare, setHoveredSquare] = createSignal<Square>("");
+    const handleMouseEnter = () => setHoveredSquare(player());
+    const handleMouseLeave = () => setHoveredSquare("");
 
-  const isFilled = () => currentWinner()?.line.includes(props.index) 
+    const isWinner = () => currentWinner()?.line.includes(props.index)
 
-  return (
-    <button
-      class="square"
-      classList={{
-        selected: square() !== "",
-        filled: isFilled(),
-      }}
-      onClick={() => props.onClick(props.index)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <Switch>
-        <Match when={square() !== ""}>{square()}</Match>
-        <Match when={square() === ""}>
-          <div class="hovered-square">{hoveredSquare()}</div>
-        </Match>
-      </Switch>
-    </button>
-  );
+    return (
+        <button
+            class="square"
+            classList={{
+                selected: square() !== "",
+                winnerO: isWinner() && currentWinner()?.winner === "O",
+                winnerX: isWinner() && currentWinner()?.winner === "X",
+                draw: isWinner() && currentWinner()?.draw,
+            }}
+            onClick={() => props.onClick(props.index)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <Switch>
+                <Match when={square() !== ""}>{square()}</Match>
+                <Match when={square() === ""}>
+                    <div class="hovered-square">{hoveredSquare()}</div>
+                </Match>
+            </Switch>
+        </button>
+    );
 }
 
 const [player, setPlayer] = createSignal<"X" | "O">("X");
 const [board, setBoard] = createSignal<Square[]>([
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
 ]);
 function createBoard(): Square[] {
-  return ["", "", "", "", "", "", "", "", ""];
+    return ["", "", "", "", "", "", "", "", ""];
 }
 const currentWinner = () => {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (const line of lines) {
-    const [a, b, c] = line;
-    if (board()[a] && board()[a] === board()[b] && board()[a] === board()[c]) {
-      return {
-        message: "the Winner is " + board()[a],
-        line: line,
-      };
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+    for (const line of lines) {
+        const [a, b, c] = line;
+        if (board()[a] && board()[a] === board()[b] && board()[a] === board()[c]) {
+            return {
+                message: "the Winner is " + board()[a],
+                line: line,
+                winner: board()[a],
+            };
+        }
     }
-  }
-  for (const square of board()) {
-    if (square === "") {
-      return null;
+    for (const square of board()) {
+        if (square === "") {
+            return null;
+        }
     }
-  }
-  return {
-    message: "it's a Draw",
-    line: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-  };
+    return {
+        message: "it's a Draw",
+        line: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        draw: true,
+    };
 };
 export function TicTacToe() {
-  const onClickSquare = (index: number) => {
-    if (board()[index] !== "") return;
-    setBoard(board().map((square, i) => (i === index ? player() : square)));
-    setPlayer(player() === "X" ? "O" : "X");
-  };
+    const onClickSquare = (index: number) => {
+        if (board()[index] !== "") return;
+        setBoard(board().map((square, i) => (i === index ? player() : square)));
+        setPlayer(player() === "X" ? "O" : "X");
+    };
 
-  return (
-    <div class="game">
-      <div class="header">Tic Tac Toe</div>
-      <div class="container">
-        <div class="row">
-          <BoardSquare index={0} board={board()} onClick={onClickSquare} />
-          <BoardSquare index={1} board={board()} onClick={onClickSquare} />
-          <BoardSquare index={2} board={board()} onClick={onClickSquare} />
+    return (
+        <div class="game">
+            <div class="header">Tic Tac Toe</div>
+            <div class="container">
+                <div class="row">
+                    <BoardSquare index={0} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={1} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={2} board={board()} onClick={onClickSquare} />
+                </div>
+                <div class="row">
+                    <BoardSquare index={3} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={4} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={5} board={board()} onClick={onClickSquare} />
+                </div>
+                <div class="row">
+                    <BoardSquare index={6} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={7} board={board()} onClick={onClickSquare} />
+                    <BoardSquare index={8} board={board()} onClick={onClickSquare} />
+                </div>
+            </div>
+            <div class="state">
+                <Show when={currentWinner() === null}>
+                    <div class="turn">{player()}'s turn</div>
+                </Show>
+                <Show when={currentWinner() !== null}>
+                    <div class="winner">{currentWinner()?.message}</div>
+                </Show>
+                <button class="reset" onClick={() => setBoard(createBoard())}>
+                    Reset
+                </button>
+            </div>
         </div>
-        <div class="row">
-          <BoardSquare index={3} board={board()} onClick={onClickSquare} />
-          <BoardSquare index={4} board={board()} onClick={onClickSquare} />
-          <BoardSquare index={5} board={board()} onClick={onClickSquare} />
-        </div>
-        <div class="row">
-          <BoardSquare index={6} board={board()} onClick={onClickSquare} />
-          <BoardSquare index={7} board={board()} onClick={onClickSquare} />
-          <BoardSquare index={8} board={board()} onClick={onClickSquare} />
-        </div>
-      </div>
-      <div class="state">
-        <Show when={currentWinner() === null}>
-          <div class="turn">{player()}'s turn</div>
-        </Show>
-        <Show when={currentWinner() !== null}>
-          <div class="winner">{currentWinner()?.message}</div>
-        </Show>
-        <button class="reset" onClick={() => setBoard(createBoard())}>
-          Reset
-        </button>
-      </div>
-    </div>
-  );
+    );
 }

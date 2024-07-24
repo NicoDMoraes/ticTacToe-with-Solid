@@ -1,85 +1,102 @@
 .game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
 }
 
 .header {
-  font-size: 2.25em;
-  font-weight: bold;
+    font-size: 2.25em;
+    font-weight: bold;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px black;
 }
 
 .row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .square {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  height: 100px;
-  border: solid 1px black;
-  font-size: 2em;
-  background: #ffff;
-  color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border: solid 1px black;
+    font-size: 2em;
+    background: #ffff;
+    color: black;
 }
 
 .square:hover {
-  background: rgb(209, 221, 237);
-  cursor: pointer;
+    background: rgb(209, 221, 237);
+    cursor: pointer;
 }
 
 .hovered-square {
-  color: grey;
+    color: grey;
 }
 
 .selected:hover {
-  cursor: default;
-  background: rgb(255, 255, 255);
+    cursor: default;
+    background: rgb(255, 255, 255);
 }
 
 .state {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1em;
-  font-size: 1.5em;
-  width: 200px;
-  height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1em;
+    font-size: 1.5em;
+    width: 200px;
+    height: 100px;
 }
 
 .reset {
-  background: rgb(255, 255, 255);
-  border: solid 1px black;
-  color: rgb(0, 0, 0);
-  border-radius: 0.5em;
-  font-size: 0.75em;
+    background: rgb(255, 255, 255);
+    border: solid 1px black;
+    color: rgb(0, 0, 0);
+    border-radius: 0.5em;
+    font-size: 0.75em;
 }
 
 .reset:hover {
-  cursor: pointer;
-  transform: scale(1.1);
+    cursor: pointer;
+    transform: scale(1.1);
 }
 
-.filled {
-  background: #bbaaFF;
+.winnerX {
+    background: #bbaaFF;
 }
-.filled:hover {
-  background: #bbaaFF;
+
+.winnerX:hover {
+    background: #bbaaFF;
+}
+
+.winnerO {
+    background: #ef9df5;
+}
+
+.winnerO:hover {
+    background: #ef9df5;
+}
+
+.draw {
+    background: #ed8637;
+}
+
+.draw:hover {
+    background: #ed8637;
 }
