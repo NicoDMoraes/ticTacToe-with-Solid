@@ -32,7 +32,7 @@ function BoardSquare(props: {
       onMouseLeave={handleMouseLeave}
     >
       {square()}
-      <Show when={hoveredSquare() !== board()[props.index]}>
+      <Show when={square() === ""}>
         <div class="hovered-square">{hoveredSquare()}</div>
       </Show>
     </button>
@@ -85,18 +85,6 @@ const currentWinner = () => {
   };
 };
 export function TicTacToe() {
-  // function HoveredSquare(){
-  // const [hoveredSquare, setHoveredSquare] = createSignal<Square>(player());
-  // const handleMouseEnter = () => setHoveredSquare(player());
-  // const handleMouseLeave = () => setHoveredSquare('');
-  // //     return <button
-  //         classList={{ 'hovered': hoveredSquare() === player() }}
-  //         onMouseEnter={handleMouseEnter}
-  //         onMouseLeave={handleMouseLeave}
-  //     >
-  //         {hoveredSquare()}
-  //     </button>
-  // }
 
   const onClickSquare = (index: number) => {
     if (board()[index] !== "") return;
