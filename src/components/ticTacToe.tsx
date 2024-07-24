@@ -5,7 +5,8 @@ type Square = "X" | "O" | "";
 // type CurrentWinner = {
 //     message: string;
 //     line: number[];
-//     winner: Square;
+//     winnerName: Square;
+//     gameOver: boolean;
 //     draw?: boolean;
 // };
 
@@ -48,7 +49,7 @@ function BoardSquare(props: {
     );
 }
 
-const [player, setPlayer] = createSignal<"X" | "O">("X");
+const [player, setPlayer] = createSignal<Square>("X");
 const [board, setBoard] = createSignal<Square[]>([
     "",
     "",
@@ -60,10 +61,14 @@ const [board, setBoard] = createSignal<Square[]>([
     "",
     "",
 ]);
-function createBoard(): Square[] {
-    return ["", "", "", "", "", "", "", "", ""];
+function createBoard() {
+    setBoard(["", "", "", "", "", "", "", "", ""]);
+    setPlayer("X");
 }
 const onClickSquare = (index: number) => {
+    if (currentWinner()?.gameOver) {
+        return setPlayer(player() === "X" ? "" : "");
+    }
     if (board()[index] !== "") return;
     setBoard(board().map((square, i) => (i === index ? player() : square)));
     setPlayer(player() === "X" ? "O" : "X");
@@ -99,8 +104,9 @@ const currentWinner = () => {
     return {
         message: "it's a Draw",
         line: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-        gameOver: true,
         draw: true,
+        gameOver: true,
+        winnerName: '',
     };
 };
 
@@ -132,7 +138,7 @@ export function TicTacToe() {
                 <Show when={currentWinner() !== null}>
                     <div class="winner">{currentWinner()?.message}</div>
                 </Show>
-                <button class="reset" onClick={() => setBoard(createBoard())}>
+                <button class="reset" onClick={() => createBoard()}>
                     Reset
                 </button>
             </div>
