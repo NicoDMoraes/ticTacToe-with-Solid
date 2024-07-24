@@ -1,8 +1,8 @@
 /* @refresh reload */
-import { render } from 'solid-js/web'
-import './index.css'
-import { TicTacToe } from './components/ticTacToe'
+import { render } from "solid-js/web";
+import "./index.css";
+import { TicTacToe } from "./components/ticTacToe";
 
-const root = document.getElementById('root')
+const root = document.getElementById("root");
 
-render(() => <TicTacToe />, root!)
+render(() => <TicTacToe />, root!);
