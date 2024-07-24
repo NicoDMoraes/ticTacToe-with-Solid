@@ -6,6 +6,11 @@
     gap: 2em;
 }
 
+.header {
+    font-size: 2.25em;
+    font-weight: bold;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -39,13 +44,39 @@
 }
 
 .selected {
-    color: purple;
+    color: black;
+}
+
+.hovered-square {
+    color: grey
 }
 
 .selected:hover {
     cursor: default;
+    background: rgb(255, 255, 255);
 }
 
-.turn {
+.state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1em;
     font-size: 1.5em;
+    width: 200px;
+    height: 100px;
+}
+
+.reset {
+    background: rgb(255, 255, 255);
+    border: solid 1px black;
+    color: rgb(0, 0, 0);
+    border-radius: 0.5em;
+    font-size: 0.75em;
+}
+
+.reset:hover {
+    cursor: pointer;
+    transform: scale(1.1);
 }

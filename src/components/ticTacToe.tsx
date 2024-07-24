@@ -1,5 +1,5 @@
 import "./ticTacToe.css";
-import { createSignal, Show } from "solid-js";
+import { createSignal, Show, For } from "solid-js";
 
 type Square = 'X' | 'O' | '';
 // type Player = 'X' | 'O';
@@ -14,54 +14,76 @@ type Square = 'X' | 'O' | '';
 //     </button>
 // }
 
+
 function BoardSquare(props: { index: number, board: Square[], onClick: (index: number) => void }) {
     const square = () => props.board[props.index];
+    const [hoveredSquare, setHoveredSquare] = createSignal<Square>('');
+    const handleMouseEnter = () => setHoveredSquare(player());
+    const handleMouseLeave = () => setHoveredSquare('');
     return <button
         class="square"
         classList={{ 'selected': square() === 'X' || square() === 'O' }}
         onClick={() => props.onClick(props.index)}
-    >{square()}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+    >
+        {square()}
+        <Show when={hoveredSquare() !== board()[props.index]}>
+            <div class="hovered-square">{hoveredSquare()}</div>
+        </Show>
+
     </button>
 }
 
-
-
+const [player, setPlayer] = createSignal<'X' | 'O'>('X');
+const [board, setBoard] = createSignal<Square[]>(
+    ['', '', '', '', '', '', '', '', '']
+);
+function createBoard(): Square[] {
+    return ['', '', '', '', '', '', '', '', ''];
+}
+const currentWinner = () => {
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+    for (const line of lines) {
+        const [a, b, c] = line;
+        if (board()[a] && board()[a] === board()[b] && board()[a] === board()[c]) {
+            return {
+                message: "the Winner is " + board()[a],
+                line: line
+            };
+        }
+    }
+    for (const square of board()) {
+        if (square === '') { return null; };
+    }
+    return {
+        message: "it's a Draw",
+        line: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    }
+};
 export function TicTacToe() {
-    const [player, setPlayer] = createSignal<'X' | 'O'>('X');
-    const [board, setBoard] = createSignal<Square[]>(
-        ['', '', '', '', '', '', '', '', '']
-    );
-    const currentWinner = () => {
 
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ];
-        for (const line of lines) {
-            const [a, b, c] = line;
-            if (board()[a] && board()[a] === board()[b] && board()[a] === board()[c]) {
-                return {
-                    message: "the Winner is " + board()[a],
-                    line: line
-                };
-            }
-        }
-        for (const square of board()) {
-            if (square === '') { return null; };
-        }
-        return {
-            message: "it's a Draw",
-            line: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        }
-    };
-
-
+    // function HoveredSquare(){
+    // const [hoveredSquare, setHoveredSquare] = createSignal<Square>(player());
+    // const handleMouseEnter = () => setHoveredSquare(player());
+    // const handleMouseLeave = () => setHoveredSquare('');
+    // //     return <button
+    //         classList={{ 'hovered': hoveredSquare() === player() }}
+    //         onMouseEnter={handleMouseEnter}
+    //         onMouseLeave={handleMouseLeave}
+    //     >
+    //         {hoveredSquare()}
+    //     </button>
+    // }
 
     const onClickSquare = (index: number) => {
         if (board()[index] !== '') return;
@@ -71,6 +93,7 @@ export function TicTacToe() {
 
     return (
         <div class="game">
+            <div class="header">Tic Tac Toe</div>
             <div class="container">
                 <div class="row">
                     <BoardSquare index={0} board={board()} onClick={onClickSquare} />
@@ -88,10 +111,21 @@ export function TicTacToe() {
                     <BoardSquare index={8} board={board()} onClick={onClickSquare} />
                 </div>
             </div>
-            <div class="turn">{player()}'s turn</div>
-            <Show when={currentWinner() !== null}>
-                <div class="winner"> {currentWinner()?.message}</div>
-            </Show>
+            <div class="state">
+                <Show when={currentWinner() === null}>
+                    <div class="turn">{player()}'s turn</div>
+                </Show>
+                <Show when={currentWinner() !== null}>
+                    <div class="winner">
+                        {currentWinner()?.message}
+                    </div>
+                </Show>
+                <button class="reset"
+                    onClick={() => setBoard(createBoard())}>Reset
+                </button>
+            </div>
         </div>
     );
 }
+
+
